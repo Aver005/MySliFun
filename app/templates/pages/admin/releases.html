@@ -1,0 +1,20 @@
+{% extends './layouts/admin_base.html' %}
+
+{% block title %}Все релизы{% endblock %}
+
+{% block content %}
+	{% for release in releases %}
+		<div class="block">
+			<a href="/admin/release?id={{ release['release_id'] }}">
+				<img src="{{ release['cover_url'] }}">
+				<h2>{{ release['name'] }}</h2>
+			</a>
+		</div>
+	{% endfor %}
+	<div class="block">
+		<a href="/admin/release/add">
+			<img src="/static/images/Plus.png">
+			<h2>Новый релиз</h2>
+		</a>
+	</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="{{ release['cover_url'] }}"/>
+	<link rel="stylesheet" type="text/css" href="static/css/Style.css">
+	<link rel="stylesheet" type="text/css" href="static/css/ReleasePage.css">
+	<title>{{ release["name"] }}</title>
+</head>
+<body>
+	<div class="background" style="background-image: url({{ release['cover_url'] }});"></div>
+	<div class="container">
+		<div class="info">
+			<img src="{{ release['cover_url'] }}">
+			<h1>{{ release["name"] }}</h1>
+			<h2>{{ artists }}</h2>
+		</div>
+		<div class="links">
+			{% for platform in platforms %}
+				<div class='platform'>
+					<img src='{{ platform["icon"] }}'>
+					<p>{{ platform["name"] }}</p>
+					<a href='{{ platform["url"] }}'>{{ platform["button_text"] }}</a>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{% extends './layouts/base.html' %}
+
+{% block title %}{{ artist["name"] }}{% endblock %}
+
+{% block content %}
+    <div class="profile-header">
+        <img class="profile-background" src="/static/images/default/Background.png">
+        <img class="profile-avatar" src="{{ artist['avatar_url'] }}">
+        <h1>{{ artist["name"] }}</h1>
+    </div>
+{% endblock %}

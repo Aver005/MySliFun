@@ -1,0 +1,72 @@
+{% extends './layouts/admin_base.html' %}
+
+{% block title %}{{ artist["name"] }}{% endblock %}
+
+{% block content %}
+	<h1>Редактирование: {{ artist["name"] }}</h1>
+
+	<div class="side">
+		<div class="blackout">
+			<a href="/">По URL</a>
+			<a href="/">С компьютера</a>
+		</div>
+
+		<img src="{{ artist['avatar_url'] }}">
+	</div>
+
+	<div class="side">
+		<h2>{{ artists_names }}</h2>
+
+		{% if artist['artist_id'] == 'NEW' %}
+			<form action="/api/create_object?redirect=/artists" method="POST">
+		{% else %}
+			<form action="/api/change_data?redirect=/artists" method="POST">
+		{% endif %}
+
+			<input type="hidden" name="artist_id" value="{{ artist['artist_id'] }}">
+
+			<p>Имя артиста</p>
+			<input type="text" name="name" value="{{ artist['name'] }}" required>
+
+			<p>Имя профиля</p>
+			<input type="text" name="profile_name" value="{{ artist['profile_name'] }}" required>
+
+			<p>Описание артиста</p>
+			<textarea type="text" name="description">{{ artist['description'] }}</textarea>
+
+			<input type="submit" value="Сохранить">
+			<input type="button" class="back" onclick="location.href = '/admin/artists';" value="Назад">
+		
+		</form>
+	</div>
+{% endblock %}
+
+{% block head_scripts %}
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
+	<script type="text/javascript">
+		const request_get_values = new Map();
+
+		let get_values_list = window.location.search.replace("?", "").split('&');
+		for (var i = 0; i < get_values_list.length; i++) 
+		{
+			let get_elems = get_values_list[i].split("=");
+			request_get_values.set(get_elems[0], get_elems[1]);
+		}
+	</script>
+{% endblock %}
+
+{% block footer_scripts %}
+	<script type="text/javascript">
+
+		function on_select_change(select_elem)
+		{
+			let index = select_elem.selectedIndex;
+			select_elem.innerHTML = select_elem.innerHTML.replaceAll('selected=""', "");
+
+			let option = select_elem.options[index];
+			option.outerHTML = option.outerHTML.replace("<option", "<option selected");
+		}
+
+	</script>
+{% endblock %}

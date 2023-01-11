@@ -1,0 +1,12 @@
+{% extends './layouts/admin_base.html' %}
+
+{% block title %}{{ name }}{% endblock %}
+
+{% block content %}
+	<div class="error-404">
+		<h1>{{ name }}</h1>
+		<p>{{ description }}</p>
+		<img src="/static/images/error/404.png">
+		<a class="back" href="{{ back_url }}">На главную</a>
+	</div>
+{% endblock %}

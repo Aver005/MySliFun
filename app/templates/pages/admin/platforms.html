@@ -1,0 +1,19 @@
+{% extends './layouts/admin_base.html' %}
+
+{% block title %}Доступные платформы{% endblock %}
+
+{% block content %}
+	{% for platform in platforms %}
+		<div class="block small">
+			<a href="/admin/platform?id={{ platform['platform_id'] }}">
+				<img src="{{ platform['icon_url'] }}">
+				<h2>{{ platform['name'] }}</h2>
+			</a>
+		</div>
+	{% endfor %}
+	<div class="block small">
+		<a href="/admin/platform/add">
+			<img src="/static/images/Plus.png">
+		</a>
+	</div>
+{% endblock %}

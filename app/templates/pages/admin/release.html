@@ -1,0 +1,145 @@
+{% extends './layouts/admin_base.html' %}
+
+{% block title %}{{ release["name"] }}{% endblock %}
+
+{% block content %}
+	<h1>Редактирование: {{ release["name"] }}</h1>
+
+	<div class="side">
+		<div class="blackout">
+			<a href="/">По URL</a>
+			<a href="/">С компьютера</a>
+		</div>
+
+		<img src="{{ release['cover_url'] }}">
+	</div>
+
+	<div class="side">
+		<h2>{{ artists_names }}</h2>
+
+		{% if release['release_id'] == 'NEW' %}
+			<form action="/api/create_object?redirect=/releases" method="POST">
+		{% else %}
+			<form action="/api/change_data?redirect=/releases" method="POST">
+		{% endif %}
+
+			<input type="hidden" name="release_id" value="{{ release['release_id'] }}">
+
+			<p>Название релиза</p>
+			<input type="text" name="name" value="{{ release['name'] }}" required>
+
+			<p>Исполнители</p>
+			<div class="artists" id="authors" name="authors">
+				{% for author in authors %}
+					<select name="authors-0" onchange="on_select_change(this);" required>
+						{% for artist in artists %}
+							<option>{{ artist["name"] }}</option>
+						{% endfor %}
+					</select>
+				{% endfor %}
+			</div>
+			<button type="button" onclick="add_new_artist('authors');">+</button>
+
+			<p>Артисты, через 'feat.'</p>
+			<div class="artists" id="feats" name="feats">
+				{% for feat in feats %}
+					<select name="feats-0" onchange="on_select_change(this);">
+						{% for artist in artists %}
+							{% if artist['name'] == feat['name'] %}
+								<option selected>{{ artist["name"] }}</option>
+							{% else %}
+								<option>{{ artist["name"] }}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				{% endfor %}
+			</div>
+			<button type="button" onclick="add_new_artist('feats');">+</button>
+
+			<p>Сокращённый ID релиза</p>
+			<input type="text" name="path" value="{{ release['path'] }}" required>
+
+			<p>Дата релиза</p>
+			<input type="datetime-local" name="release_date" value="{{ release['release_date'] }}" required>
+
+			<p>Тип</p>
+			<select name="type" onchange="on_select_change(this);" required>
+				{% for type in ["SINGLE", "EP", "ALBUM"] %}
+					{% if type == release['type'] %}
+						<option selected>{{ type }}</option>
+					{% else %}
+						<option>{{ type }}</option>
+					{% endif %}
+				{% endfor %}
+			</select>
+
+			<p>Описание релиза</p>
+			<textarea type="text" name="description">{{ release['description'] }}</textarea>
+
+			<p>Площадки для публикации</p>
+			<div class="platforms-choose">
+				{% for platform in platforms %}
+					<div class="platform-choose">
+						<small>{{ platform['name'] }}</small>
+						<input type="text" name="platform-{{ platform['name'] }}" placeholder="Ссылка" value="{{ platform['url'] }}">
+						<!-- <input type="checkbox" name="{{ platform['name'] }}" checked> -->
+					</div>
+				{% endfor %}
+
+			</div> 
+
+			<input type="submit" value="Сохранить">
+			<input type="button" class="back" onclick="location.href = '/admin//releases';" value="Назад">
+
+		</form>
+	</div>
+{% endblock %}
+
+{% block head_scripts %}
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
+	<script type="text/javascript">
+		const request_get_values = new Map();
+
+		let get_values_list = window.location.search.replace("?", "").split('&');
+		for (var i = 0; i < get_values_list.length; i++) 
+		{
+			let get_elems = get_values_list[i].split("=");
+			request_get_values.set(get_elems[0], get_elems[1]);
+		}
+	</script>
+{% endblock %}
+
+{% block footer_scripts %}
+	<script type="text/javascript">
+
+		function on_select_change(select_elem)
+		{
+			let index = select_elem.selectedIndex;
+			select_elem.innerHTML = select_elem.innerHTML.replaceAll('selected=""', "");
+
+			let option = select_elem.options[index];
+			option.outerHTML = option.outerHTML.replace("<option", "<option selected");
+		}
+
+		function add_new_artist(div_id) 
+		{
+			let authors_div = document.querySelector("#" + div_id);
+			let release_id = request_get_values.get('id');
+			if (release_id == undefined) {release_id = "NEW";}
+
+			$.get('/api/get_artists_in_release_select_element', 
+				{
+					release_id: release_id
+				}, 
+
+				function(data) 
+				{
+					data = data.replace("%name%", div_id + "-" + authors_div.childElementCount);
+					authors_div.innerHTML += data;
+				}
+			);
+		}
+
+	</script>
+{% endblock %}
