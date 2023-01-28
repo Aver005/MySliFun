@@ -83,7 +83,7 @@
 					'platform_id': platform_id,
 					'photo_url': url,
 					'photo_name': platform_name
-				}).done(() => window.location.reload())
+				}).done(clear_update_icon_inputs_and_reload)
 				return;
 			}
 
@@ -99,9 +99,16 @@
 					contentType: false,
 					cache: false,
 					processData: false,
-					success: () => window.location.reload()
+					success: () => clear_update_icon_inputs_and_reload()
 				})
 			}
+		}
+
+		function clear_update_icon_inputs_and_reload() {
+			document.getElementById('upload_url').value = "";
+			document.getElementById('file-upload').value = "";
+
+			window.location.reload();
 		}
 	</script>
 {% endblock %}

@@ -318,7 +318,7 @@ def change_data(obj=None, obj_name=None, **args):
         return drop_error(f"Unknown {obj_name}")
 
     if hasattr(obj, "get_icon_picture_key"):
-        _proceed_icon_url(args, obj.get_icon_picture_key())
+        _proceed_icon_url(args, obj.get_icon_picture_key)
 
     updated_data = {}
     for key, value in args.items():
@@ -327,7 +327,7 @@ def change_data(obj=None, obj_name=None, **args):
             setattr(obj, key, value)
             updated_data[key] = value
 
-        # Обновление платформы релиза
+        # Обновление всех платформ-релизов
         elif "platform-" in key and len(value) > 0:
             platform_name = key.replace("platform-", "")
             platform = Platforms.query.filter_by(name=platform_name).first()

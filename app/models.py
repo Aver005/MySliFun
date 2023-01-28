@@ -22,6 +22,7 @@ class Releases(db.Model):
         self.release_id = release_id
         self.name = name
 
+    @property
     def get_icon_picture_key(self):
         """
         :return: Icon key for updating file
@@ -45,6 +46,7 @@ class Artists(db.Model):
         self.artist_id = artist_id
         self.name = name
 
+    @property
     def get_icon_picture_key(self):
         """
         :return: Icon key for updating file
@@ -63,6 +65,7 @@ class Platforms(db.Model):
         self.platform_id = platform_id
         self.name = name
 
+    @property
     def get_icon_picture_key(self):
         """
         :return: Icon key for updating file
