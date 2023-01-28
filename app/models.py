@@ -22,6 +22,12 @@ class Releases(db.Model):
         self.release_id = release_id
         self.name = name
 
+    def get_icon_picture_key(self):
+        """
+        :return: Icon key for updating file
+        """
+        return "cover_url"
+
 
 class Artists(db.Model):
     id = Column(Integer(), nullable=False, primary_key=True, unique=True)
@@ -39,6 +45,12 @@ class Artists(db.Model):
         self.artist_id = artist_id
         self.name = name
 
+    def get_icon_picture_key(self):
+        """
+        :return: Icon key for updating file
+        """
+        return "avatar_url"
+
 
 class Platforms(db.Model):
     id = Column(Integer(), nullable=False, primary_key=True, unique=True)
@@ -50,6 +62,12 @@ class Platforms(db.Model):
     def __init__(self, platform_id, name):
         self.platform_id = platform_id
         self.name = name
+
+    def get_icon_picture_key(self):
+        """
+        :return: Icon key for updating file
+        """
+        return "icon_url"
 
 
 class ReleasePlatforms(db.Model):

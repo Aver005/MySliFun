@@ -1,4 +1,8 @@
+import os.path
 import uuid
+
+import flask
+from werkzeug.utils import secure_filename
 
 from .models import *
 from .utils import *
@@ -281,27 +285,49 @@ def create_platform():
     pass
 
 
+def _proceed_icon_url(args, icon_key):
+    picture_static_path = os.path.join("images/user_images", f"{args['photo_name']}.png")
+    output_icon_key = os.path.join('/static', picture_static_path)
+
+    if 'photo_url' in args:
+        get_picture(args['photo_url'], os.path.join(flask.current_app.static_folder, picture_static_path))
+
+        args[icon_key] = output_icon_key
+        return
+    if len(flask.request.files) > 0:
+        file = flask.request.files['file']
+
+        if file and is_file_allowed(file.filename):
+            file.save(os.path.join(flask.current_app.static_folder, picture_static_path))
+            args[icon_key] = output_icon_key
+
+
 def change_data(obj=None, obj_name=None, **args):
     if obj_name is None or obj is None:
-        if "release_id" in args.keys():
+        if "release_id" in args:
             obj = Releases.query.filter_by(release_id=args["release_id"]).first()
             obj_name = "Release"
-        if "artist_id" in args.keys():
+        if "artist_id" in args:
             obj = Artists.query.filter_by(artist_id=args["artist_id"]).first()
             obj_name = "Artist"
-        if "platform_id" in args.keys():
+        if "platform_id" in args:
             obj = Platforms.query.filter_by(platform_id=args["platform_id"]).first()
             obj_name = "Platform"
 
     if obj is None:
         return drop_error(f"Unknown {obj_name}")
 
+    if hasattr(obj, "get_icon_picture_key"):
+        _proceed_icon_url(args, obj.get_icon_picture_key())
+
     updated_data = {}
-    for key in args.keys():
-        value = args.get(key)
+    for key, value in args.items():
+        # Обновление платформы
         if key in obj.__dict__ and getattr(obj, key) != value:
             setattr(obj, key, value)
             updated_data[key] = value
+
+        # Обновление платформы релиза
         elif "platform-" in key and len(value) > 0:
             platform_name = key.replace("platform-", "")
             platform = Platforms.query.filter_by(name=platform_name).first()

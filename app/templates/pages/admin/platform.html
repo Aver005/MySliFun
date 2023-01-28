@@ -76,13 +76,13 @@
 		function on_refresh_button_click(platform_id = "{{ platform['platform_id'] }}",
 										 platform_name = "{{ platform['name'] }}") {
 			let url = document.getElementById('upload_url').value
-			let files_list = document.getElementById('upload_file').files
+			let files_list = document.getElementById('file-upload').files
 
 			if (url !== "") {
 				$.post('/api/change_data', {
 					'platform_id': platform_id,
 					'photo_url': url,
-					'platform_name': platform_name
+					'photo_name': platform_name
 				}).done(() => window.location.reload())
 				return;
 			}
@@ -91,7 +91,7 @@
 				let form_data = new FormData();
 				form_data.append("file", files_list[0])
 				form_data.append('platform_id', platform_id)
-				form_data.append('platform_name', platform_name)
+				form_data.append('photo_name', platform_name)
 
 				$.ajax('/api/change_data', {
 					type: 'POST',
