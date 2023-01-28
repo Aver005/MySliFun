@@ -7,8 +7,15 @@
 
 	<div class="side">
 		<div class="blackout">
-			<a href="/">По URL</a>
-			<a href="/">С компьютера</a>
+			<form id="upload" enctype="multipart/form-data" method="post">
+				<input id="upload_url" type="text" accept="*/*" placeholder="По URL">
+				<label for="file-upload" class="custom-file-upload">
+					Выберите файл
+				</label>
+				<input id="file-upload" type="file" accept="image/*">
+			</form>
+
+			<button class="refresh-button" id="refresh_image" onclick="on_refresh_button_click()">Обновить иконку</button>
 		</div>
 
 		<img src="{{ platform['icon_url'] }}">
@@ -18,9 +25,9 @@
 		<h2>{{ artists_names }}</h2>
 
 		{% if platform['platform_id'] == 'NEW' %}
-			<form action="/api/create_object?redirect=/platforms" method="POST">
+			<form action="/api/create_object?redirect=/admin/platforms" method="POST">
 		{% else %}
-			<form action="/api/change_data?redirect=/platforms" method="POST">
+			<form action="/api/change_data?redirect=/admin/platforms" method="POST">
 		{% endif %}
 
 			<input type="hidden" name="platform_id" value="{{ platform['platform_id'] }}">
@@ -32,7 +39,7 @@
 			<input type="text" name="url" value="{{ platform['url'] }}" required>
 
 			<input type="submit" value="Сохранить">
-			<input type="button" class="back" onclick="location.href = '/platforms';" value="Назад">
+			<input type="button" class="back" onclick="location.href = 'platforms';" value="Назад">
 		
 		</form>
 	</div>
@@ -40,7 +47,8 @@
 
 {% block head_scripts %}
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	
+
+
 	<script type="text/javascript">
 		const request_get_values = new Map();
 
@@ -65,5 +73,35 @@
 			option.outerHTML = option.outerHTML.replace("<option", "<option selected");
 		}
 
+		function on_refresh_button_click(platform_id = "{{ platform['platform_id'] }}",
+										 platform_name = "{{ platform['name'] }}") {
+			let url = document.getElementById('upload_url').value
+			let files_list = document.getElementById('upload_file').files
+
+			if (url !== "") {
+				$.post('/api/change_data', {
+					'platform_id': platform_id,
+					'photo_url': url,
+					'platform_name': platform_name
+				}).done(() => window.location.reload())
+				return;
+			}
+
+			if (files_list.length !== 0) {
+				let form_data = new FormData();
+				form_data.append("file", files_list[0])
+				form_data.append('platform_id', platform_id)
+				form_data.append('platform_name', platform_name)
+
+				$.ajax('/api/change_data', {
+					type: 'POST',
+					data: form_data,
+					contentType: false,
+					cache: false,
+					processData: false,
+					success: () => window.location.reload()
+				})
+			}
+		}
 	</script>
 {% endblock %}

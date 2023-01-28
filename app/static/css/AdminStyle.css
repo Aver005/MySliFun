@@ -238,43 +238,6 @@ body
 	transition: background-color 0.5s;
 }
 
-.blackout
-{
-	display: inline-block;
-    position: absolute;
-    width: calc(18vw + 20vh);
-    height: calc(18vw + 20vh);
-    border-radius: 2vh;
-    background-color: rgba(0,0,0,0);
-    z-index: 1;
-    opacity: 0;
-
-    transition: background-color 0.5s, opacity 0.5s;
-}
-
-.blackout:hover
-{
-    background-color: rgba(0,0,0,0.8);
-    opacity: 1;
-    transition: background-color 0.5s, opacity 0.5s;
-}
-
-.blackout a
-{
-	display: flex;
-	font-size: calc(1.5vh + 1vw);
-	color: #fff;
-	background-color: #7b7b7ba1;
-	padding: 0.6vh 3vh;
-	margin: 2vw 5vw;
-	border-radius: 1vh;
-}
-
-.blackout a:first-child
-{	
-	margin-top: calc(5vw + 4vh);
-}
-
 .artists
 {
 	display: contents;
@@ -331,4 +294,55 @@ body
 	width: 30vh;
 	margin: 6vh auto;
 	display: block;
+}
+
+/**
+	Upload section
+ */
+.blackout
+{
+	display: inline-block;
+	position: absolute;
+	width: calc(18vw + 20vh);
+	height: calc(18vw + 20vh);
+	border-radius: 2vh;
+	background-color: rgba(0,0,0,0);
+	z-index: 1;
+	opacity: 0;
+
+	transition: background-color 0.5s, opacity 0.5s;
+}
+
+.blackout:hover
+{
+	background-color: rgba(0,0,0,0.8);
+	opacity: 1;
+	transition: background-color 0.5s, opacity 0.5s;
+}
+
+.blackout a
+{
+	display: flex;
+	font-size: calc(1.5vh + 1vw);
+	color: #fff;
+	background-color: #7b7b7ba1;
+	padding: 0.6vh 3vh;
+	margin: 2vw 5vw;
+	border-radius: 1vh;
+}
+
+.blackout a:first-child
+{
+	margin-top: calc(5vw + 4vh);
+}
+
+
+input[type=file] {
+	display: none;
+}
+
+.custom-file-upload {
+	display: inline-block;
+	padding: 6px 12px;
+	cursor: pointer;
 }

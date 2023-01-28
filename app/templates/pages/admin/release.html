@@ -7,8 +7,15 @@
 
 	<div class="side">
 		<div class="blackout">
-			<a href="/">По URL</a>
-			<a href="/">С компьютера</a>
+			<form id="upload" enctype="multipart/form-data" method="post">
+				<input id="upload_url" type="text" accept="*/*" placeholder="По URL">
+				<label for="file-upload" class="custom-file-upload">
+					Выберите файл
+				</label>
+				<input id="file-upload" type="file" accept="image/*">
+			</form>
+
+			<button id="refresh_image" onclick="on_refresh_button_click()">REFRESH BUTTON</button>
 		</div>
 
 		<img src="{{ release['cover_url'] }}">
@@ -97,7 +104,7 @@
 
 {% block head_scripts %}
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	
+
 	<script type="text/javascript">
 		const request_get_values = new Map();
 
@@ -126,7 +133,7 @@
 		{
 			let authors_div = document.querySelector("#" + div_id);
 			let release_id = request_get_values.get('id');
-			if (release_id == undefined) {release_id = "NEW";}
+			if (release_id === undefined) {release_id = "NEW";}
 
 			$.get('/api/get_artists_in_release_select_element', 
 				{
@@ -141,5 +148,35 @@
 			);
 		}
 
+		function on_refresh_button_click(release_id = "{{ release['release_id'] }}",
+										 release_name = "{{ release['name'] }}") {
+			let url = document.getElementById('upload_url').value
+			let files_list = document.getElementById('upload_file').files
+
+			if (url !== "") {
+				$.post('/api/change_data', {
+					'release_id': release_id,
+					'photo_url': url,
+					'name': release_name
+				}).done(() => window.location.reload())
+				return;
+			}
+
+			if (files_list.length !== 0) {
+				let form_data = new FormData();
+				form_data.append("file", files_list[0])
+				form_data.append('release_id', release_id)
+				form_data.append('name', release_name)
+
+				$.ajax('/api/change_data', {
+					type: 'POST',
+					data: form_data,
+					contentType: false,
+					cache: false,
+					processData: false,
+					success: () => window.location.reload()
+				})
+			}
+		}
 	</script>
 {% endblock %}
