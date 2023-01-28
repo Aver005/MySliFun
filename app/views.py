@@ -87,7 +87,7 @@ def page_release_links(path):
 def page_api(command):
     if "redirect" in request.values:
         api.run_api_function(command, request.values)
-        return redirect(request.values["redirect"])
+        return redirect("/admin/" + request.values["redirect"])
     return api.run_api_function(command, request.values)
 
 
