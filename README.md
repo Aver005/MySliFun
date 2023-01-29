@@ -25,8 +25,26 @@ MySliFun - сервис для удобного анализа музыкаль�
 Платформа будет постоянно расти и дополняться новым функционалом.
 
 ## Запуск
+
 Для работы сервиса вам понадобятся библиотеки, которые написаны в **requirements.txt**
 После установки их запустите файл *"run.py"* в корневой директории.
 Теперь вы можете зайти в браузер и ввести: http://127.0.0.1:12345
 
 *Порт можно поменять в самом файле "run.py"*
+
+### Запуск напрямую через Python (Dev way)
+```
+git clone https://github.com/Aver005/MySliFun
+cd MySliFun
+pip install -r requirements.txt
+python run.py
+```
+
+### Запуск через Apache2 (Production way)
+```
+(/etc/apache2/sites-available/default-ssl.conf virtualhost settings)
+WSGIDaemonProcess flask user=www-data group=www-data processes=2 threads=5 python-home=/pythonvenv
+WSGIScriptAlias / /home/anydir/passenger.wsgi
+
+WSGIProcessGroup flask
+```
