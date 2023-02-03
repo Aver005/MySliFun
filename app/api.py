@@ -317,7 +317,7 @@ def change_data(obj=None, obj_name=None, **args):
     if obj is None:
         return drop_error(f"Unknown {obj_name}")
 
-    if hasattr(obj, "get_icon_picture_key"):
+    if hasattr(obj, "get_icon_picture_key") and "photo_name" in args:
         _proceed_icon_url(args, obj.get_icon_picture_key)
 
     updated_data = {}

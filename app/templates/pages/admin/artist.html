@@ -7,8 +7,15 @@
 
 	<div class="side">
 		<div class="blackout">
-			<a href="/">По URL</a>
-			<a href="/">С компьютера</a>
+			<form id="upload" enctype="multipart/form-data" method="post">
+                <h3>Изменить обложку</h3>
+				<input id="upload_url" type="text" accept="*/*" placeholder="По URL">
+                <p>Или</p>
+				<label for="file-upload" class="custom-file-upload">Выберите файл</label>
+				<input id="file-upload" type="file" accept="image/*">
+			</form>
+
+			<button class="refresh-button" id="refresh_image" onclick="on_refresh_button_click()">Обновить иконку</button>
 		</div>
 
 		<img src="{{ artist['avatar_url'] }}">
@@ -68,5 +75,44 @@
 			option.outerHTML = option.outerHTML.replace("<option", "<option selected");
 		}
 
+        function on_refresh_button_click(artist_id = "{{ artist['artist_id'] }}",
+										 artist_name = "{{ artist['name'] }}")
+        {
+			let url = document.getElementById('upload_url').value
+			let files_list = document.getElementById('file-upload').files
+
+			if (url !== "") {
+				$.post('/api/change_data', {
+					'artist_id': artist_id,
+					'photo_url': url,
+					'photo_name': artist_name
+				}).done(clear_update_icon_inputs_and_reload)
+				return;
+			}
+
+			if (files_list.length !== 0) {
+				let form_data = new FormData();
+				form_data.append("file", files_list[0])
+				form_data.append('artist_id', artist_id)
+				form_data.append('photo_name', artist_name)
+
+				$.ajax('/api/change_data', {
+					type: 'POST',
+					data: form_data,
+					contentType: false,
+					cache: false,
+					processData: false,
+					success: clear_update_icon_inputs_and_reload
+				})
+			}
+		}
+
+		function clear_update_icon_inputs_and_reload()
+        {
+			document.getElementById('upload_url').value = "";
+			document.getElementById('file-upload').value = "";
+
+			window.location.reload();
+		}
 	</script>
 {% endblock %}

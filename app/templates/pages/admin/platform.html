@@ -8,10 +8,10 @@
 	<div class="side">
 		<div class="blackout">
 			<form id="upload" enctype="multipart/form-data" method="post">
+                <h3>Изменить обложку</h3>
 				<input id="upload_url" type="text" accept="*/*" placeholder="По URL">
-				<label for="file-upload" class="custom-file-upload">
-					Выберите файл
-				</label>
+                <p>Или</p>
+				<label for="file-upload" class="custom-file-upload">Выберите файл</label>
 				<input id="file-upload" type="file" accept="image/*">
 			</form>
 
@@ -74,7 +74,8 @@
 		}
 
 		function on_refresh_button_click(platform_id = "{{ platform['platform_id'] }}",
-										 platform_name = "{{ platform['name'] }}") {
+										 platform_name = "{{ platform['name'] }}")
+        {
 			let url = document.getElementById('upload_url').value
 			let files_list = document.getElementById('file-upload').files
 

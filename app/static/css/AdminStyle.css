@@ -118,16 +118,16 @@ body
 
 .side
 {
-	width: calc(28vw + 20vh);
+	width: calc(25vw + 26vh);
 	padding: 2vw;
 	overflow: hidden;
 }
 
 .side img
 {
-	width: calc(18vw + 20vh);
+	width: calc(24vw + 20vh);
+	height: calc(24vw + 20vh);
 	border-radius: 2vh;
-
 	transition: -webkit-filter 0.3s;
 }
 
@@ -148,7 +148,7 @@ body
 	margin: 0;
 }
 
-.side input, select, textarea
+.side input, select, textarea, label[for="file-upload"]
 {
 	width: 75%;
 	border: none;
@@ -194,21 +194,15 @@ body
 
 .side button
 {
-	width: 6vh;
-	background-color: #ACEDEF;
 	border: none;
-	border-radius: 1vh;
-	font-size: 2vh;
-	margin-top: 1vh;
 	transition: width 0.5s, background-color 0.5s;
-}
-
-.side button:hover
-{
-	width: 8vh;
-	background-color: #63DFFF;
+	display: inline-block;
 	cursor: pointer;
-	transition: width 0.5s, background-color 0.5s;
+	background-color: #21c7d5;
+	border-radius: 1vh;
+	margin: 2vh;
+	padding: 0.5vh 2vh;
+	font-size: 2vh;
 }
 
 .side textarea
@@ -258,7 +252,7 @@ body
 
 .platform-choose
 {
-	width: 20vh;	
+	width: 20vh;
 	padding: 0.5vh;
 }
 
@@ -303,19 +297,18 @@ body
 {
 	display: inline-block;
 	position: absolute;
-	width: calc(18vw + 20vh);
-	height: calc(18vw + 20vh);
+	width: calc(24vw + 20vh);
+	height: calc(24vw + 20vh);
 	border-radius: 2vh;
-	background-color: rgba(0,0,0,0);
+	background-color: rgb(0 0 0 / 0%);
 	z-index: 1;
 	opacity: 0;
-
 	transition: background-color 0.5s, opacity 0.5s;
 }
 
 .blackout:hover
 {
-	background-color: rgba(0,0,0,0.8);
+	background-color: rgba(0,0,0,0.9);
 	opacity: 1;
 	transition: background-color 0.5s, opacity 0.5s;
 }
@@ -336,13 +329,32 @@ body
 	margin-top: calc(5vw + 4vh);
 }
 
+.blackout form
+{
+	margin: 3vw;
+}
 
-input[type=file] {
+.blackout h3
+{
+	font-size: calc(1vw + 2vh);
+	padding-bottom: calc(1vw + 2vh);
+	color: #eee;
+}
+
+.blackout p
+{
+	margin: 0.5vw 0;
+	color: #ffffff4f;
+}
+
+.blackout input[type=file]
+{
 	display: none;
 }
 
-.custom-file-upload {
+.custom-file-upload
+{
 	display: inline-block;
-	padding: 6px 12px;
+	background-color: #ff3b41;
 	cursor: pointer;
 }

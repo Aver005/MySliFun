@@ -8,14 +8,14 @@
 	<div class="side">
 		<div class="blackout">
 			<form id="upload" enctype="multipart/form-data" method="post">
+                <h3>Изменить обложку</h3>
 				<input id="upload_url" type="text" accept="*/*" placeholder="По URL">
-				<label for="file-upload" class="custom-file-upload">
-					Выберите файл
-				</label>
+                <p>Или</p>
+				<label for="file-upload" class="custom-file-upload">Выберите файл</label>
 				<input id="file-upload" type="file" accept="image/*">
 			</form>
 
-			<button id="refresh_image" onclick="on_refresh_button_click()">REFRESH BUTTON</button>
+			<button class="refresh-button" id="refresh_image" onclick="on_refresh_button_click()">Обновить иконку</button>
 		</div>
 
 		<img src="{{ release['cover_url'] }}">
@@ -149,7 +149,8 @@
 		}
 
 		function on_refresh_button_click(release_id = "{{ release['release_id'] }}",
-										 release_name = "{{ release['name'] }}") {
+										 release_name = "{{ release['name'] }}")
+        {
 			let url = document.getElementById('upload_url').value
 			let files_list = document.getElementById('file-upload').files
 
@@ -179,7 +180,8 @@
 			}
 		}
 
-		function clear_update_icon_inputs_and_reload() {
+		function clear_update_icon_inputs_and_reload()
+        {
 			document.getElementById('upload_url').value = "";
 			document.getElementById('file-upload').value = "";
 
